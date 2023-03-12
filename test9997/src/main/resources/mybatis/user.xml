@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+			"-//mybatis.org//DTD mapper 3.0//EN"
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+			
+<mapper namespace="com.itbank.repository.UserDAO">
+
+	<select id="selectListAll" resultType="user">
+		select 
+			* from user3 
+		order by idx
+	</select>
+	
+	<insert id="insert" parameterType="user">
+		insert into
+			user3 (userid, userpw, usernick, birth, phone, memo) 
+			values (
+				#{userid},
+				#{userpw},
+				#{usernick},
+				#{birth},
+				#{phone},
+				#{memo}
+				)
+	</insert>
+	
+	<select id="login" resultType="user" parameterType="String">
+		select 
+			* from user3
+		where userpw=#{result}
+	</select>
+
+</mapper>

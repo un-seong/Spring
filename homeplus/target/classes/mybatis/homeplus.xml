@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+			"-//mybatis.org//DTD mapper 3.0//EN"
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+			
+<mapper namespace="com.itbank.repository.HomeplusDAO">
+
+	<select id="selectList" resultType="homeplus">
+		select 
+			* 
+			from homeplus
+	</select>
+	
+	<select id="selectDetail" resultType="homeplus" parameterType="int">
+		select 
+			* 
+			from homeplus 
+		where idx=#{idx}
+	</select>
+	
+	<insert id="insert" parameterType="homeplus" >
+		insert into
+			homeplus 
+			values (
+				homeplus_seq.nextval,
+				#{category},
+				#{productName},
+				#{price},
+				#{score},
+				#{thumbNail},
+				#{reviewImage},
+				#{registDate}
+			)
+	</insert>
+
+	<update id="update" parameterType="homeplus">
+		update 
+			homeplus set
+				category=#{category}, 
+				productName=#{productName}, 
+				price=#{price}, 
+				score=#{score}, 
+				thumbnail=#{thumbNail}, 
+				reviewimage=#{reviewImage}
+				where idx=#{idx}
+	</update>
+	
+	<update id="update1" parameterType="homeplus">
+		update 
+			homeplus set 
+				category=#{category}, 
+				productName=#{productName}, 
+				price=#{price}, 
+				score=#{score} 
+				where idx=#{idx}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from homeplus where idx=#{idx}	
+	</delete>
+	
+	<select id="selectListAsc" resultType="homeplus">
+		select 
+			* 
+			from homeplus order by price asc
+	</select>
+	
+	<select id="selectListDesc" resultType="homeplus">
+		select 
+			* 
+			from homeplus order by price desc
+	</select>
+	
+	
+
+</mapper>			

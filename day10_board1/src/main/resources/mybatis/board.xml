@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itbank.repository.BoardDAO">
+
+	<select id="selectlist" resultType="board">
+		select * from board order by idx
+	</select>
+
+	<insert id="insertWrite" parameterType="board">
+		insert into board 
+			values (
+				board_seq.nextval,
+				#{title},
+				#{content},
+				sysdate,
+				#{writer},
+				#{count}
+				)
+	</insert>
+	
+	<select id="search" parameterType="String" resultType="board">
+		select * from board
+			where title like '%${title}%'
+			order by idx
+	</select>
+	
+	<select id="selectOneBoard" parameterType="int" resultType="board">
+		select * from board where idx = #{idx}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from board where idx = #{idx}
+	</delete>
+
+	<update id="update" parameterType="board">
+		update board set 
+			title=#{title},
+			content=#{content}		
+		where idx=#{idx}
+	</update>
+
+	<update id="updateCount" parameterType="int">
+	update board set count = count+1 where idx=#{idx}
+	</update>
+</mapper>	

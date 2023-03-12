@@ -1,0 +1,40 @@
+create SEQUENCE book3_seq
+    start with 1000
+    maxvalue 9999999
+    INCREMENT by 1    
+    nocycle
+    nocache;
+    
+create table book3 (
+	idx			number			default book3_seq.nextval primary key,
+	name		varchar2(100)	not null,
+	author		varchar2(100)	not null,
+	publisher	varchar2(100)	not null,
+	publishDate	date			not null,
+	price		number			check (price between 0 and 500000),
+	memo		varchar2(2000)	not null,
+	score		number(4, 1)	check (score between 0 and 10)
+);
+
+select * from book3;
+
+delete from book3 where idx=1004;
+
+select * from book3 where name like '%가%';
+
+update book3 set name='인생의 역사', author='신형철', publisher='날까', publishdate='88/07/10', price=15000, memo='할수있다', score=8 where idx=1003;
+
+commit;
+
+desc book3;
+
+select * from book3 where price <= 14900;
+
+insert into book3(name, author, publisher, publishDate, price, memo, score)
+    values('모든 것은 기본에서 시작한다', '손웅정', '수오서재', '2021-10-15', 14400, '실력도 기술도 사람 됨됨이도, 기본을 지키는 손웅정의 삶의 철학', 8);
+    
+insert into book3(name, author, publisher, publishDate, price, memo, score)
+    values('너의 하루가 따숩길 바라', '고은지', '북라이프', '2022-12-09', 14400, '마음에 약을 발라주는 힐링곰 꽁달이의 푹신한 위로', 7.5);
+    
+insert into book3(name, author, publisher, publishDate, price, memo, score)
+    values('기분이 태도가 되지 말자', '김수현', '하이스트', '2022-11-25', 14400, '감정조절이 필요한 당신을 위한 책', 1);

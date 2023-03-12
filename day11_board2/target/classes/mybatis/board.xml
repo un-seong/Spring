@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itbank.repository.BoardDAO">
+
+	<select id="selectlist" resultType="board" parameterType="int">
+		select 
+			* 
+			from board2 
+			order by idx desc
+		offset #{offset} rows 
+		fetch next 10 rows only
+	</select>
+
+	<insert id="insertWrite" parameterType="board">
+		insert into board2 (
+			<if test="uploadFile == ''">
+				writer, title, content, ipAddr, viewCount
+			</if>
+			<if test="uploadFile != ''">
+				writer, title, content, ipAddr, viewCount, uploadFile
+			</if>
+				)
+			values (
+				<if test="uploadFile == ''">
+					#{writer}, 
+					#{title}, 
+					#{content},
+					#{ipAddr},
+					#{viewCount}
+				</if>										
+				<if test="uploadFile != ''">
+					#{writer}, 
+					#{title}, 
+					#{content},
+					#{ipAddr},
+					#{viewCount},
+					#{uploadFile}
+				</if>
+					)
+	</insert>
+	
+	<select id="search" parameterType="String" resultType="board">
+		select 
+			* 
+			from board2 where title like '%${title}%' 			
+	</select>
+	
+	<select id="selectOneBoard" parameterType="int" resultType="board">
+		select * from board2 where idx = #{idx}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from board2 where idx = #{idx}
+	</delete>
+
+	<update id="update" parameterType="board">
+		update board2 
+			<set>
+				<if test="uploadFile != ''">
+					title=#{title},
+					content=#{content},			
+					uploadFile=#{uploadFile}
+				</if>
+				
+				<if test="uploadFile == ''">
+					title=#{title},
+					content=#{content}
+				</if>
+			</set>
+		where idx=#{idx}
+	</update>
+
+	<update id="updateCount" parameterType="int">
+	update board2 set viewCount = viewCount+1 where idx=#{idx}
+	</update>
+	
+	<select id="selectBoardCount" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="total" resultType="int">
+		select count(*) from board2
+	</select>
+	
+	<select id="selectBefoeFile" parameterType="int" resultType="String">
+		select uploadfile from board2 where idx = #{idx}
+	</select>
+		
+	<insert id="insertReply" parameterType="reply">
+		insert into reply(idx, writer, memo) values (#{idx}, #{writer}, #{memo})
+	</insert>
+		
+	<select id="selectReply" parameterType="int" resultType="reply">
+		select * from reply where idx = #{idx}
+	</select>
+	
+	<update id="updateIlike" parameterType="int">
+		update reply set ilike = ilike+1 where replyIdx = #{replyIdx}
+	</update>
+	
+	<update id="updateDislike" parameterType="int">
+		update reply set dislike = dislike+1 where replyIdx = #{replyIdx}
+	</update>
+	
+	
+		
+</mapper>	

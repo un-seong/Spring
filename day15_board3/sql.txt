@@ -1,0 +1,113 @@
+select * from member5 where rownum between 1 and 5;
+
+select * from member5 where userpw = 'test22' and idx = 30;
+
+select * from member5;
+
+select * from member5 where userid='test22' and userpw='test22';
+
+delete from member5 where userid='Test22';
+
+commit;
+
+insert into member5 values (member5_seq.nextval, 'test6', 'test6', '관리자6', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test7', 'test7', '관리자7', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test8', 'test8', '관리자8', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test9', 'test9', '관리자9', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test10', 'test10', '관리자10', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test11', 'test11', '관리자11', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test12', 'test12', '관리자12', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test13', 'test13', '관리자13', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test14', 'test14', '관리자14', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test15', 'test15', '관리자15', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test16', 'test16', '관리자16', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test17', 'test17', '관리자17', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test18', 'test18', '관리자18', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test19', 'test19', '관리자19', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test20', 'test20', '관리자20', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test21', 'test21', '관리자21', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test22', 'test22', '관리자22', sysdate, '남성');
+insert into member5 values (member5_seq.nextval, 'test23', 'test23', '관리자23', sysdate, '남성');
+
+DELETe from member5 where idx = 10;
+
+
+update member5 set userid = 'test88', userpw='test88', username='관리자88', birth='23/11/11', gender='남성' where idx=35;
+
+commit;
+
+
+create sequence board2_seq
+    start with 1
+    maxvalue 99999
+    increment by 1
+    nocache
+    nocycle;
+
+create table board2 (
+    idx         number      DEFAULT board2_seq.nextval primary key,
+    writer      varchar2(100)   not null,
+    title       varchar2(1000)  not null,
+    content     varchar2(3000)  not null,
+    writeDate   date             default sysdate,
+    ipaddr      varchar2(30)    not null,
+    viewCount   number          default 0,
+    uploadFile  varchar2(255),
+    
+    constraint fk_board2_member5
+    foreign key(writer)
+    references member5(userid)
+    on delete cascade
+);
+drop table board2;
+select * from board2 order by idx;
+commit;
+
+desc board2;
+
+insert into board2 (writer, title, content, ipaddr, viewcount, uploadfile)
+    select writer, title, content, ipaddr, viewcount, uploadfile from board2;
+    
+select count(*) from board2;
+
+select * from board2 where title like '%tes%'
+order by idx asc offset 20 rows fetch next 10 rows only;
+
+select * from board2;
+
+create sequence reply_seq
+    start with 1
+    maxvalue 99999
+    increment by 1
+    nocache
+    nocycle;
+
+create table reply (
+    replyidx    number          default reply_seq.nextval primary key,
+    idx         number              not null,
+    writer      varchar2(100)       not null,
+    memo        varchar2(255)       not null,
+    ilike        number             default 0,
+    dislike     number              default 0,
+    ilikeid     varchar2(100),
+    dislikeid   varchar2(100),
+        
+    constraint fk_reply_board2
+    foreign key(idx)
+    references board2(idx)
+    on delete cascade
+);
+
+drop table reply;
+
+desc reply;
+
+select * from reply;
+commit;
+
+update reply set ilike = ilike+1 where idx = 109;
+
+select * from reply where idx = 383 order by idx;
+
+select banner from v$version;
+select * from member5;
